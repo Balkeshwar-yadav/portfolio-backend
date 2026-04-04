@@ -1,14 +1,15 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
-import authRoutes from './routes/Contact.js'
+import messageRoutes from './routes/messageRoutes.js';
 import dotenv from "dotenv";
 
 dotenv.config();  // Load .env variables
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost:5174', // frontend dev
+  'http://localhost:5174',
+  'http://localhost:5173', // frontend dev
   'https://portfolio-website-eight-gamma-82.vercel.app' // production
 ];
 
@@ -26,7 +27,7 @@ app.use(cors({
 app.use(express.json());
 
 app.get('/', (req ,res)=>{
-   res.send("Api is running");
+   res.send("Api is running on Portfolio-Website");
 })
 
 const PORT = process.env.PORT || 5000;
@@ -38,7 +39,9 @@ mongoose.connect(MONGO_URI)
 .catch((err)=>console.log(err));
 
 // Routes
-app.use("/api/contact", authRoutes);
+
+
+app.use('/api', messageRoutes);
 
 
 
