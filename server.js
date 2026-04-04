@@ -7,7 +7,11 @@ import dotenv from "dotenv";
 dotenv.config();  // Load .env variables
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://portfolio-website-eight-gamma-82.vercel.app/", // <--- exact Vercel URL
+  methods: ["GET","POST","PUT","DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 
 app.get('/', (req ,res)=>{
@@ -18,9 +22,9 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // DB
-mongoose.connect(MONGO_URI,{
-   dbName:"Poftfolio-website"
-}).then(()=>console.log("Mongodb Connected...!")).catch((err)=>console.log(err));
+mongoose.connect(MONGO_URI)
+.then(()=>console.log("Mongodb Connected...!"))
+.catch((err)=>console.log(err));
 
 // Routes
 app.use("/api/contact", authRoutes);
