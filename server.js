@@ -7,9 +7,20 @@ import dotenv from "dotenv";
 dotenv.config();  // Load .env variables
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5174', // frontend dev
+  'https://portfolio-website-eight-gamma-82.vercel.app' // production
+];
+
+
 app.use(cors({
-  origin: "https://portfolio-website-eight-gamma-82.vercel.app/", // <--- exact Vercel URL
-  methods: ["GET","POST","PUT","DELETE"],
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // allow non-browser requests like Postman
+    if(allowedOrigins.indexOf(origin) === -1){
+      return callback(new Error('CORS not allowed'), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
